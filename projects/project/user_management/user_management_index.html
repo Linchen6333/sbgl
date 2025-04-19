@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="user_management_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="button-container">
+        <button id="addButton" class="button button-normal">新增用户</button>
+        <button id="batchDeleteButton" class="button button-batch-delete">批量删除</button>
+    </div>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>编号</th>
+                <th>用户名</th>
+                <th>创建人</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(addModal)">&times;</span>
+            <h2>新增用户</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="username">用户名:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="提交" class="button button-submit">
+                    <button type="button" onclick="closeModal(addModal)" class="button button-cancel">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(editModal)">&times;</span>
+            <h2>修改用户</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId" name="editId">
+                <div class="form-group">
+                    <label for="editUsername">用户名:</label>
+                    <input type="text" id="editUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPassword">新密码 (留空则不修改):</label>
+                    <input type="password" id="editPassword" name="password">
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="提交" class="button button-submit">
+                    <button type="button" onclick="closeModal(editModal)" class="button button-cancel">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="user_management_script.js"></script>
+</body>
+</html>

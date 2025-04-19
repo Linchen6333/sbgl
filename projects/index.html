@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <!-- 设置字符编码为UTF-8 -->
+    <meta charset="UTF-8">
+    <!-- 设置视口宽度为设备宽度，初始缩放比例为1.0，实现响应式布局 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 设置页面标题 -->
+    <title>设备管理系统登录</title>
+    <!-- 引入外部样式表 -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 验证码容器样式，使用相对定位 */
+       .captcha-container {
+            position: relative;
+        }
+
+        /* 验证码文本样式，绝对定位在输入框右侧，添加边框、内边距、字体大小等样式，禁止用户选择文本，设置鼠标指针为手型 */
+        /* 定义验证码文本区域的样式 */
+       .captcha-text {
+            /* 使用绝对定位，相对于最近的已定位祖先元素进行定位 */
+            position: absolute;
+            /* 元素靠右对齐 */
+            right: 1px;
+            /* 元素靠上对齐 */
+            top: 1.7px; /* 向上调整1.7px，留出上边距 */
+            bottom: 1.7px; /* 向下调整1.7px，留出下边距 */
+            /* 设置内边距，上下为 20.4px - 1.7px，左右为 25.5px */
+            padding: calc(20.4px - 1.7px) 25.5px;
+            /* 设置左边框，宽度为 1.7px，颜色为 #ddd */
+            border-left: 1.7px solid #ddd;
+            /* 设置上边框，宽度为 1.7px，颜色为 #ddd */
+            border-top: 1.7px solid #dddddd00;
+            /* 设置下边框，宽度为 1px，颜色为 #ddd */
+            border-bottom: 1px solid #dddddd00;
+            /* 设置边框圆角，右上角和右下角为 6x */
+            border-radius: 0 6px 6px 0;
+            /* 设置字体大小为 27.2px */
+            font-size: 27.2px;
+            /* 禁止用户选中该元素内的文本 */
+            user-select: none;
+            /* 鼠标悬停时显示为手型指针，表明该元素可点击 */
+            cursor: pointer;
+            /* 使用 Flexbox 布局 */
+            display: flex;
+            /* 垂直居中对齐子元素 */
+            align-items: center;
+            /* 使验证码背景高度与输入框一致 */
+            height: calc(100% - 3.4px); /* 上下共留出3.4px的边距 */
+        }
+
+        /* 验证码字符样式，设置为行内块元素 */
+       .captcha-char {
+            display: inline-block;
+            font-size: 45px; /* 设置字体大小为 45px */
+            font-weight: bold; /* 设置字体加粗 */
+        }
+    </style>
+    <!-- 引入外部 JavaScript 文件 -->
+    <script src="captcha.js"></script>
+    <script src="account_validation.js"></script>
+</head>
+
+<body>
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <!-- Logo区域 -->
+        <div class="logo">
+            <!-- 显示Logo图片 -->
+            <img src="image/LOGO.png" alt="CRM系统" class="logo-img">
+            <!-- 显示系统名称 -->
+            <span class="system-name">设备管理系统</span>
+        </div>
+        <!-- 登录表单 -->
+        <form class="login-form" action="#" method="post">
+            <!-- 账号输入框 -->
+            <div class="form-group">
+                <!-- 账号标签，显示红色星号表示必填项 -->
+                <label for="username" class="input-label"><span class="required-star">*</span> 账号</label>
+                <!-- 账号输入框，设置为文本类型，有占位符，为必填项 -->
+                <input type="text" id="username" name="username" placeholder="账号" required>
+            </div>
+            <!-- 密码输入框 -->
+            <div class="form-group">
+                <!-- 密码标签，显示红色星号表示必填项 -->
+                <label for="password" class="input-label"><span class="required-star">*</span> 密码</label>
+                <!-- 密码输入框，设置为密码类型，有占位符，为必填项 -->
+                <input type="password" id="password" name="password" placeholder="密码" required>
+            </div>
+            <!-- 验证码输入框 -->
+            <div class="form-group">
+                <!-- 验证码标签，显示红色星号表示必填项 -->
+                <label for="captcha" class="input-label"><span class="required-star">*</span> 验证码</label>
+                <!-- 验证码容器 -->
+                <div class="captcha-container">
+                    <!-- 验证码输入框，设置为文本类型，有占位符，为必填项 -->
+                    <input type="text" id="captcha" name="captcha" placeholder="请输入验证码" required>
+                    <!-- 验证码显示区域，点击可重新生成验证码 -->
+                    <span id="captcha-text" class="captcha-text" onclick="generateCaptcha()"></span>
+                </div>
+            </div>
+            <!-- 登录按钮，点击调用验证验证码的函数 -->
+            <button type="button" onclick="validateCaptcha()" class="login-btn">登录</button>
+        </form>
+    </div>
+</body>
+
+</html>    

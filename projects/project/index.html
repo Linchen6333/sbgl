@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <!-- 左侧导航菜单 -->
+        <div class="main-menu">
+            <div class="logo">
+                <h2>管理系统</h2>
+            </div>
+
+            <div class="menu-item active" data-target="home">
+                <i class="fas fa-home"></i> 首页
+            </div>
+
+            <div class="menu-item" data-target="device-management">
+                <i class="fas fa-laptop"></i> 设备管理
+            </div>
+
+            <div class="menu-item" data-target="account-management">
+                <i class="fas fa-user"></i> 账号管理
+                <div class="sub-menu">
+                    <div class="sub-item" data-target="account-registration">
+                        <i class="fas fa-user-plus"></i> 账号登记
+                    </div>
+                    <div class="sub-item" data-target="account-blocked-records">
+                        <i class="fas fa-user-lock"></i> 封号记录
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item" data-target="system-management">
+                <i class="fas fa-cog"></i> 系统管理
+                <div class="sub-menu">
+                    <div class="sub-item" data-target="user-management">
+                        <i class="fas fa-users"></i> 用户管理
+                    </div>
+                    <div class="sub-item" data-target="platform-management">
+                        <i class="fas fa-server"></i> 平台管理
+                    </div>
+                    <div class="sub-item" data-target="device-model">
+                        <i class="fas fa-mobile-alt"></i> 设备型号
+                    </div>
+                    <div class="sub-item" data-target="holder">
+                        <i class="fas fa-id-card"></i> 持有人
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧内容区域 -->
+        <div class="content-area">
+            <!-- 顶部标题栏 -->
+            <div class="page-header">
+                <h1 class="page-title">首页</h1>
+                <div class="user-info">
+                    <span class="username">
+                        <i class="fas fa-user-circle"></i> 管理员
+                    </span>
+                    <div class="user-dropdown">
+                        <div class="dropdown-item"><i class="fas fa-key"></i> 修改密码</div>
+                        <div class="dropdown-item"><i class="fas fa-sign-out-alt"></i> 退出登录</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 页面内容 -->
+            <div class="page-content">
+
+
+                <div id="home" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="stats/stats.html" frameborder="0"></iframe>
+                </div>
+
+
+
+
+                <div id="device-management" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="device_management/device_management.html" frameborder="0"></iframe>
+                </div>
+
+
+
+
+
+
+
+
+
+
+                <div id="account-management" class="content-section" style="display: none;">
+                    <p>这是一个账号管理</p>
+                </div>
+
+                <div id="account-registration" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="account_management/account_management.html" frameborder="0"></iframe>
+                </div>
+
+
+
+
+
+
+
+                <div id="account-blocked-records" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="account_management/banned_account_management.html" frameborder="0"></iframe>
+                </div>
+
+
+
+
+
+
+
+                <div id="system-management" class="content-section" style="display: none;">
+                    <p>这是一个系统管理</p>
+                </div>
+
+                <div id="user-management" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="user_management/user_management_index.html" frameborder="0"></iframe>
+                </div>
+
+
+                <div id="platform-management" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="platform_management/platform_management_index.html" frameborder="0"></iframe>
+                </div>   
+
+
+
+                <div id="device-model" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="device_models/device_models_index.html" frameborder="0"></iframe>
+                </div>               
+
+                <div id="holder" class="content-section" style="display: none;">
+                    <iframe id="managementFrame" src="account_holder_management/account_holder_management_index.html" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>

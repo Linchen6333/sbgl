@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账号登记管理</title>
+    <link rel="stylesheet" href="account_management_banned_account_management_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="search-bar">
+            <input type="text" id="accountSearch" placeholder="搜索账号">
+            <input type="text" id="phoneNumberSearch" placeholder="搜索绑定手机号">
+            <input type="text" id="realNamePersonSearch" placeholder="搜索实名人">
+            <button id="searchButton" class="button button-search">搜索</button>
+        </div>
+        <div class="filter-bar">
+            <select id="platformFilter" class="filter-select">
+                <option value="">所有平台</option>
+            </select>
+            <select id="registrationMethodFilter" class="filter-select">
+                <option value="">所有注册方式</option>
+                <option value="自注册">自注册</option>
+                <option value="接码">接码</option>
+            </select>
+            <select id="realNameSourceFilter" class="filter-select">
+                <option value="">所有实名来源</option>
+                <option value="外部">外部</option>
+                <option value="内部">内部</option>
+            </select>
+            <select id="holderFilter" class="filter-select">
+                <option value="">所有持有人</option>
+            </select>
+            <select id="statusFilter" class="filter-select">
+                <option value="">所有状态</option>
+                <option value="投入使用">投入使用</option>
+                <option value="备用">备用</option>
+                <option value="激活/核对">激活/核对</option>
+                <option value="临时封禁">临时封禁</option>
+                <option value="永久封禁">永久封禁</option>
+            </select>
+            <button id="resetFilterButton" class="button button-normal">重置筛选</button>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button id="addButton" class="button button-normal">新增账号</button>
+        <button id="batchMoveToBannedButton" class="button button-batch-delete">批量移入封号</button>
+    </div>
+
+    <table id="accountTable">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>编号</th>
+                <th>平台</th>
+                <th>账号</th>
+                <th>密码</th>
+                <th>注册方式</th>
+                <th>绑定手机号</th>
+                <th>实名来源</th>
+                <th>实名人</th>
+                <th>实名岗位</th>
+                <th>登入设备</th>
+                <th>设备持有人</th>
+                <th>当前状态</th>
+                <th>解封时间</th>
+                <th>创建时间</th>
+                <th>最后修改人</th>
+                <th>最后修改时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="pagination" id="pagination">
+        <button id="prevPage" class="button button-pagination">上一页</button>
+        <span id="pageInfo">第 1 页</span>
+        <button id="nextPage" class="button button-pagination">下一页</button>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(addModal)">&times;</span>
+            <h2>新增账号</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="platform">平台:</label>
+                    <input type="text" id="platform" name="platform" required>
+                </div>
+                <div class="form-group">
+                    <label for="account">账号:</label>
+                    <input type="text" id="account" name="account" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码:</label>
+                    <input type="text" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="registrationMethod">注册方式:</label>
+                    <select id="registrationMethod" name="registrationMethod" required>
+                        <option value="">请选择注册方式</option>
+                        <option value="自注册">自注册</option>
+                        <option value="接码">接码</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">绑定手机号:</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber">
+                </div>
+                <div class="form-group">
+                    <label for="realNameSource">实名来源:</label>
+                    <select id="realNameSource" name="realNameSource" required>
+                        <option value="">请选择实名来源</option>
+                        <option value="外部">外部</option>
+                        <option value="内部">内部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="realNamePerson">实名人:</label>
+                    <input type="text" id="realNamePerson" name="realNamePerson">
+                </div>
+                <div class="form-group">
+                    <label for="realNamePosition">实名岗位:</label>
+                    <input type="text" id="realNamePosition" name="realNamePosition">
+                </div>
+                <div class="form-group">
+                    <label for="deviceId">登入设备:</label>
+                    <select id="deviceId" name="deviceId">
+                        <option value="">无设备</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="holderId">设备持有人:</label>
+                    <select id="holderId" name="holderId">
+                        <option value="">无持有人</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">当前状态:</label>
+                    <select id="status" name="status" required>
+                        <option value="">请选择状态</option>
+                        <option value="投入使用">投入使用</option>
+                        <option value="备用">备用</option>
+                        <option value="激活/核对">激活/核对</option>
+                        <option value="临时封禁">临时封禁</option>
+                        <option value="永久封禁">永久封禁</option>
+                    </select>
+                </div>
+                <div class="form-group" id="unbanTimeGroup" style="display: none;">
+                    <label for="unbanTime">解封时间:</label>
+                    <input type="datetime-local" id="unbanTime" name="unbanTime">
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="提交" class="button button-submit">
+                    <button type="button" onclick="closeModal(addModal)" class="button button-cancel">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(editModal)">&times;</span>
+            <h2>修改账号</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId" name="editId">
+                <div class="form-group">
+                    <label for="editPlatform">平台:</label>
+                    <input type="text" id="editPlatform" name="platform" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAccount">账号:</label>
+                    <input type="text" id="editAccount" name="account" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPassword">密码:</label>
+                    <input type="text" id="editPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="editRegistrationMethod">注册方式:</label>
+                    <select id="editRegistrationMethod" name="registrationMethod" required>
+                        <option value="">请选择注册方式</option>
+                        <option value="自注册">自注册</option>
+                        <option value="接码">接码</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editPhoneNumber">绑定手机号:</label>
+                    <input type="text" id="editPhoneNumber" name="phoneNumber">
+                </div>
+                <div class="form-group">
+                    <label for="editRealNameSource">实名来源:</label>
+                    <select id="editRealNameSource" name="realNameSource" required>
+                        <option value="">请选择实名来源</option>
+                        <option value="外部">外部</option>
+                        <option value="内部">内部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editRealNamePerson">实名人:</label>
+                    <input type="text" id="editRealNamePerson" name="realNamePerson">
+                </div>
+                <div class="form-group">
+                    <label for="editRealNamePosition">实名岗位:</label>
+                    <input type="text" id="editRealNamePosition" name="realNamePosition">
+                </div>
+                <div class="form-group">
+                    <label for="editDeviceId">登入设备:</label>
+                    <select id="editDeviceId" name="deviceId">
+                        <option value="">无设备</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editHolderId">设备持有人:</label>
+                    <select id="editHolderId" name="holderId">
+                        <option value="">无持有人</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editStatus">当前状态:</label>
+                    <select id="editStatus" name="status" required>
+                        <option value="">请选择状态</option>
+                        <option value="投入使用">投入使用</option>
+                        <option value="备用">备用</option>
+                        <option value="激活/核对">激活/核对</option>
+                        <option value="临时封禁">临时封禁</option>
+                        <option value="永久封禁">永久封禁</option>
+                    </select>
+                </div>
+                <div class="form-group" id="editUnbanTimeGroup" style="display: none;">
+                    <label for="editUnbanTime">解封时间:</label>
+                    <input type="datetime-local" id="editUnbanTime" name="unbanTime">
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="提交" class="button button-submit">
+                    <button type="button" onclick="closeModal(editModal)" class="button button-cancel">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="moveToBannedModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(moveToBannedModal)">&times;</span>
+            <h2>移入封号列表</h2>
+            <form id="moveToBannedForm">
+                <input type="hidden" id="moveToBannedId" name="id">
+                <div class="form-group">
+                    <label for="phoneNumberSource">手机号来源:</label>
+                    <input type="text" id="phoneNumberSource" name="phoneNumberSource" required>
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="确认移入" class="button button-submit">
+                    <button type="button" onclick="closeModal(moveToBannedModal)" class="button button-cancel">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="account_script.js"></script>
+</body>
+</html>

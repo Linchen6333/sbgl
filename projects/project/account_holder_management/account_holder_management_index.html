@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备/账号持有人管理</title>
+    <link rel="stylesheet" href="account_holder_management_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="search-bar">
+            <input type="text" id="nameSearch" placeholder="搜索姓名">
+            <input type="text" id="departmentSearch" placeholder="搜索部门">
+            <button id="searchButton" class="button button-search">搜索</button>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button id="addButton" class="button button-normal">新增持有人</button>
+        <button id="batchDeleteButton" class="button button-batch-delete">批量删除</button>
+    </div>
+
+    <table id="holderTable">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>部门</th>
+                <th>创建人</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="pagination" id="pagination">
+        <button id="prevPage" class="button button-pagination">上一页</button>
+        <span id="pageInfo">第 1 页</span>
+        <button id="nextPage" class="button button-pagination">下一页</button>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(addModal)">&times;</span>
+            <h2>新增账号持有人</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="name">姓名:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">部门:</label>
+                    <input type="text" id="department" name="department" required>
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="提交" class="button button-submit">
+                    <button type="button" onclick="closeModal(addModal)" class="button button-cancel">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal(editModal)">&times;</span>
+            <h2>修改账号持有人</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId" name="editId">
+                <div class="form-group">
+                    <label for="editName">姓名:</label>
+                    <input type="text" id="editName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDepartment">部门:</label>
+                    <input type="text" id="editDepartment" name="department" required>
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="提交" class="button button-submit">
+                    <button type="button" onclick="closeModal(editModal)" class="button button-cancel">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="account_holder_management_script.js"></script>
+</body>
+</html>
