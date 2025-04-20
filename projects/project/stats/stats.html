@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备账号统计</title>
+    <link rel="stylesheet" href="stats_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 统计卡片样式 */
+        .stats-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1400px;
+            margin: 2rem auto;
+            gap: 2rem;
+        }
+        
+        .stats-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e6ed;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .stats-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .stats-total {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #3498db;
+            background: #f0f7ff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        
+        .stats-filter {
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-select {
+            padding: 0.6rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+            min-width: 150px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23718096" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 10px) center;
+            background-size: 16px;
+            padding-right: 30px;
+        }
+        
+        .filter-select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            background-color: #fff;
+        }
+        
+        .stats-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .stats-table th {
+            background: #f8fafc;
+            color: #4a5568;
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .stats-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .stats-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .stats-table tr:hover td {
+            background: #f8fafc;
+        }
+        
+        .holder-count {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .platform-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+        
+        .platform-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .platform-total {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #3498db;
+        }
+        
+        .refresh-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-button:hover {
+            background: #2980b9;
+            transform: rotate(90deg);
+        }
+        
+        .refresh-icon {
+            font-size: 1.5rem;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .stats-card {
+                padding: 1.5rem;
+            }
+            
+            .stats-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .stats-table th, 
+            .stats-table td {
+                padding: 0.8rem;
+            }
+            
+            .filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>设备账号统计</h1>
+    </div>
+
+    <div class="stats-container">
+        <!-- 设备统计卡片 -->
+        <div class="stats-card" id="deviceStatsCard">
+            <div class="stats-header">
+                <h2 class="stats-title">设备统计</h2>
+                <div class="stats-total">总计: <span id="totalDevices">0</span></div>
+            </div>
+            <table class="stats-table" id="deviceStatsTable">
+                <thead>
+                    <tr>
+                        <th>持有人</th>
+                        <th>设备数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 设备统计数据将在这里动态加载 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 账号统计卡片 -->
+        <div class="stats-card" id="accountStatsCard">
+            <div class="stats-header">
+                <h2 class="stats-title">账号统计</h2>
+                <div class="stats-filter">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">所有状态</option>
+                        <option value="投入使用">投入使用</option>
+                        <option value="备用">备用</option>
+                        <option value="临时封禁">临时封禁</option>
+                    </select>
+                </div>
+            </div>
+            <div id="accountStatsContent">
+                <!-- 账号统计数据将在这里动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <button class="refresh-button" id="refreshButton">
+        <span class="refresh-icon">↻</span>
+    </button>
+
+    <script>
+        // 获取元素
+        const deviceStatsTableBody = document.getElementById('deviceStatsTable').getElementsByTagName('tbody')[0];
+        const totalDevicesSpan = document.getElementById('totalDevices');
+        const accountStatsContent = document.getElementById('accountStatsContent');
+        const refreshButton = document.getElementById('refreshButton');
+        const statusFilter = document.getElementById('statusFilter');
+
+        // 加载设备统计数据
+        const loadDeviceStats = () => {
+            fetch('http://localhost:3007/api/stats/devices')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        deviceStatsTableBody.innerHTML = '';
+                        data.data.forEach(stat => {
+                            const row = document.createElement('tr');
+                            
+                            const holderCell = document.createElement('td');
+                            holderCell.textContent = stat.holder_name;
+                            
+                            const countCell = document.createElement('td');
+                            countCell.innerHTML = `<span class="holder-count">${stat.holder_count}</span>`;
+                            
+                            row.appendChild(holderCell);
+                            row.appendChild(countCell);
+                            deviceStatsTableBody.appendChild(row);
+                        });
+                        
+                        totalDevicesSpan.textContent = data.total;
+                    } else {
+                        console.error('加载设备统计数据失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        };
+
+        // 加载账号统计数据
+        const loadAccountStats = (status = '') => {
+            let url = 'http://localhost:3007/api/stats/accounts';
+            if (status) {
+                url += `?status=${encodeURIComponent(status)}`;
+            }
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        accountStatsContent.innerHTML = '';
+                        
+                        for (const platform in data.data) {
+                            const platformStats = data.data[platform];
+                            
+                            // 创建平台标题和总计
+                            const platformHeader = document.createElement('div');
+                            platformHeader.className = 'platform-header';
+                            platformHeader.innerHTML = `
+                                <div class="platform-name">${platform}</div>
+                                <div class="platform-total">总计: ${platformStats.total}</div>
+                            `;
+                            accountStatsContent.appendChild(platformHeader);
+                            
+                            // 创建表格
+                            const table = document.createElement('table');
+                            table.className = 'stats-table';
+                            
+                            // 表头
+                            const thead = document.createElement('thead');
+                            thead.innerHTML = `
+                                <tr>
+                                    <th>持有人</th>
+                                    <th>账号数量</th>
+                                </tr>
+                            `;
+                            table.appendChild(thead);
+                            
+                            // 表体
+                            const tbody = document.createElement('tbody');
+                            platformStats.holders.forEach(holder => {
+                                const row = document.createElement('tr');
+                                
+                                const holderCell = document.createElement('td');
+                                holderCell.textContent = holder.holder_name;
+                                
+                                const countCell = document.createElement('td');
+                                countCell.innerHTML = `<span class="holder-count">${holder.holder_count}</span>`;
+                                
+                                row.appendChild(holderCell);
+                                row.appendChild(countCell);
+                                tbody.appendChild(row);
+                            });
+                            table.appendChild(tbody);
+                            
+                            accountStatsContent.appendChild(table);
+                        }
+                    } else {
+                        console.error('加载账号统计数据失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        };
+
+        // 状态筛选变化事件
+        statusFilter.addEventListener('change', (e) => {
+            const status = e.target.value;
+            loadAccountStats(status);
+        });
+
+        // 刷新数据
+        const refreshData = () => {
+            loadDeviceStats();
+            loadAccountStats(statusFilter.value);
+        };
+
+        // 刷新按钮点击事件
+        refreshButton.addEventListener('click', () => {
+            refreshData();
+            // 添加旋转动画
+            refreshButton.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                refreshButton.style.transform = 'rotate(0deg)';
+            }, 500);
+        });
+
+        // 初始加载数据
+        window.onload = () => {
+            refreshData();
+            
+            // 每30秒自动刷新一次
+            setInterval(refreshData, 30000);
+        };
+    </script>
+</body>
+</html>
